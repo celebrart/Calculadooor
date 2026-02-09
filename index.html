@@ -3,174 +3,265 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora Glassmorphism</title>
+    <title>Calculadora Pro 2026 | Ultra-Modern</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
+        :root {
+            --bg: #08080a;
+            --accent: #00ffa3;
+            --glass: rgba(255, 255, 255, 0.03);
+            --text: #ffffff;
         }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Outfit', sans-serif; }
 
         body {
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            background: linear-gradient(45deg, #0f0c29, #302b63, #24243e);
+            background: radial-gradient(circle at top left, #121217, #08080a);
+            color: var(--text);
+            overflow: hidden;
         }
 
-        /* Container da Calculadora */
-        .calculator {
+        /* Fundo Animado */
+        body::before {
+            content: '';
+            position: absolute;
+            width: 300px; height: 300px;
+            background: var(--accent);
+            filter: blur(150px);
+            opacity: 0.15;
+            top: 10%; left: 10%;
+            z-index: -1;
+            animation: move 10s infinite alternate;
+        }
+
+        @keyframes move { from { transform: translate(0, 0); } to { transform: translate(100px, 100px); } }
+
+        .app-container {
             position: relative;
-            width: 350px;
-            padding: 20px;
-            border-radius: 30px;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.3);
+            width: 400px;
+            background: var(--glass);
+            backdrop-filter: blur(40px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 40px;
+            padding: 30px;
+            box-shadow: 0 40px 100px rgba(0,0,0,0.5);
         }
 
-        /* Display */
-        .display {
-            width: 100%;
-            height: 100px;
-            background: rgba(255, 255, 255, 0.05);
-            border: none;
-            outline: none;
-            border-radius: 20px;
-            margin-bottom: 20px;
-            color: #fff;
+        /* Display Futurista */
+        .display-area {
             text-align: right;
-            padding: 20px;
-            font-size: 2.5em;
+            margin-bottom: 30px;
+        }
+
+        #history-display {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.4);
+            min-height: 20px;
+            margin-bottom: 5px;
+        }
+
+        #main-display {
+            font-size: 3.5rem;
             font-weight: 300;
+            word-wrap: break-word;
+            overflow: hidden;
         }
 
         /* Grade de Botões */
-        .buttons {
+        .grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 15px;
         }
 
+        .scientific {
+            display: none; /* Escondido por padrão */
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 15px;
+            animation: fadeIn 0.5s ease;
+        }
+
         button {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            background: rgba(255, 255, 255, 0.1);
-            color: #fff;
-            font-size: 1.2em;
+            border: none;
+            outline: none;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text);
+            height: 70px;
+            border-radius: 20px;
+            font-size: 1.2rem;
             cursor: pointer;
-            transition: 0.3s;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             display: flex;
-            justify-content: center;
             align-items: center;
+            justify-content: center;
         }
 
         button:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.15);
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
         }
 
-        button:active {
-            transform: translateY(0);
-        }
+        button:active { transform: scale(0.95); }
 
-        /* Cores Especiais */
-        .operator {
-            color: #00d2ff;
-            font-weight: 600;
-        }
-
-        .clear {
-            color: #ff4b2b;
-        }
-
-        .equal {
-            background: #00d2ff;
-            color: #fff;
-            box-shadow: 0 0 20px rgba(0, 210, 255, 0.5);
-        }
-
-        .equal:hover {
-            background: #fff;
-            color: #00d2ff;
-        }
-
-        /* Botão Zero Estendido */
-        .zero {
+        .op { color: var(--accent); font-weight: bold; }
+        .special { background: rgba(0, 255, 163, 0.1); color: var(--accent); }
+        
+        #btn-equal {
+            background: var(--accent);
+            color: #000;
+            font-weight: bold;
             grid-column: span 2;
-            width: 135px;
-            border-radius: 30px;
         }
+
+        #btn-equal:hover {
+            box-shadow: 0 0 30px rgba(0, 255, 163, 0.4);
+        }
+
+        /* Toggle Modo Científico */
+        .mode-toggle {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 0.8rem;
+            color: var(--accent);
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
-    <div class="calculator">
-        <input type="text" class="display" id="display" disabled>
-        <div class="buttons">
-            <button class="clear" onclick="clearDisplay()">C</button>
-            <button class="operator" onclick="appendToDisplay('/')">/</button>
-            <button class="operator" onclick="appendToDisplay('*')">×</button>
-            <button class="operator" onclick="backspace()">⌫</button>
-            
-            <button onclick="appendToDisplay('7')">7</button>
-            <button onclick="appendToDisplay('8')">8</button>
-            <button onclick="appendToDisplay('9')">9</button>
-            <button class="operator" onclick="appendToDisplay('-')">-</button>
-            
-            <button onclick="appendToDisplay('4')">4</button>
-            <button onclick="appendToDisplay('5')">5</button>
-            <button onclick="appendToDisplay('6')">6</button>
-            <button class="operator" onclick="appendToDisplay('+')">+</button>
-            
-            <button onclick="appendToDisplay('1')">1</button>
-            <button onclick="appendToDisplay('2')">2</button>
-            <button onclick="appendToDisplay('3')">3</button>
-            <button class="equal" onclick="calculate()">=</button>
-            
-            <button class="zero" onclick="appendToDisplay('0')">0</button>
-            <button onclick="appendToDisplay('.')">.</button>
+    <div class="app-container">
+        <div class="mode-toggle" onclick="toggleScientific()">Modo Avançado</div>
+        
+        <div class="display-area">
+            <div id="history-display"></div>
+            <div id="main-display">0</div>
+        </div>
+
+        <div id="scientific-keys" class="scientific">
+            <button onclick="scientific('sin')">sin</button>
+            <button onclick="scientific('cos')">cos</button>
+            <button onclick="scientific('tan')">tan</button>
+            <button onclick="scientific('log')">log</button>
+            <button onclick="scientific('pow')">xʸ</button>
+            <button onclick="scientific('sqrt')">√</button>
+            <button onclick="scientific('pi')">π</button>
+            <button onclick="scientific('e')">e</button>
+        </div>
+
+        <div class="grid">
+            <button class="special" onclick="clearAll()">AC</button>
+            <button class="special" onclick="deleteLast()">DEL</button>
+            <button class="op" onclick="append('%')">%</button>
+            <button class="op" onclick="append('/')">÷</button>
+
+            <button onclick="append('7')">7</button>
+            <button onclick="append('8')">8</button>
+            <button onclick="append('9')">9</button>
+            <button class="op" onclick="append('*')">×</button>
+
+            <button onclick="append('4')">4</button>
+            <button onclick="append('5')">5</button>
+            <button onclick="append('6')">6</button>
+            <button class="op" onclick="append('-')">−</button>
+
+            <button onclick="append('1')">1</button>
+            <button onclick="append('2')">2</button>
+            <button onclick="append('3')">3</button>
+            <button class="op" onclick="append('+')">+</button>
+
+            <button onclick="append('0')">0</button>
+            <button onclick="append('.')">.</button>
+            <button id="btn-equal" onclick="compute()">=</button>
         </div>
     </div>
 
     <script>
-        const display = document.getElementById('display');
+        let currentInput = '0';
+        let history = '';
+        let isScientific = false;
 
-        function appendToDisplay(input) {
-            display.value += input;
+        const mainDisplay = document.getElementById('main-display');
+        const historyDisplay = document.getElementById('history-display');
+
+        function updateDisplay() {
+            mainDisplay.innerText = currentInput;
+            historyDisplay.innerText = history;
+            
+            // Ajuste de fonte para números grandes
+            if (currentInput.length > 8) mainDisplay.style.fontSize = '2.5rem';
+            else mainDisplay.style.fontSize = '3.5rem';
         }
 
-        function clearDisplay() {
-            display.value = "";
+        function append(char) {
+            if (currentInput === '0' && char !== '.') currentInput = char;
+            else currentInput += char;
+            updateDisplay();
         }
 
-        function backspace() {
-            display.value = display.value.slice(0, -1);
+        function clearAll() {
+            currentInput = '0';
+            history = '';
+            updateDisplay();
         }
 
-        function calculate() {
+        function deleteLast() {
+            currentInput = currentInput.slice(0, -1) || '0';
+            updateDisplay();
+        }
+
+        function compute() {
             try {
-                // eval realiza o cálculo da string no display
-                display.value = eval(display.value);
-            } catch (error) {
-                display.value = "Erro";
-                setTimeout(clearDisplay, 1500);
+                // Sanitização e cálculo
+                let expression = currentInput.replace('×', '*').replace('÷', '/');
+                history = currentInput + ' =';
+                currentInput = String(Number(eval(expression).toFixed(8))); // Limita precisão decimal
+                updateDisplay();
+            } catch {
+                currentInput = "Erro";
+                updateDisplay();
+                setTimeout(clearAll, 1000);
             }
         }
 
-        // Suporte para teclado
-        document.addEventListener('keydown', (event) => {
-            const key = event.key;
-            if (/[0-9]/.test(key)) appendToDisplay(key);
-            if (['+', '-', '*', '/'].includes(key)) appendToDisplay(key);
-            if (key === 'Enter' || key === '=') calculate();
-            if (key === 'Backspace') backspace();
-            if (key === 'Escape') clearDisplay();
+        function toggleScientific() {
+            isScientific = !isScientific;
+            document.getElementById('scientific-keys').style.display = isScientific ? 'grid' : 'none';
+            document.querySelector('.mode-toggle').innerText = isScientific ? 'Modo Simples' : 'Modo Avançado';
+        }
+
+        function scientific(func) {
+            let val = parseFloat(currentInput);
+            history = `${func}(${currentInput}) =`;
+            switch(func) {
+                case 'sin': currentInput = Math.sin(val).toFixed(4); break;
+                case 'cos': currentInput = Math.cos(val).toFixed(4); break;
+                case 'tan': currentInput = Math.tan(val).toFixed(4); break;
+                case 'log': currentInput = Math.log10(val).toFixed(4); break;
+                case 'sqrt': currentInput = Math.sqrt(val).toFixed(4); break;
+                case 'pi': currentInput = Math.PI.toFixed(6); break;
+                case 'e': currentInput = Math.E.toFixed(6); break;
+                case 'pow': currentInput += '**'; break;
+            }
+            updateDisplay();
+        }
+
+        // Suporte a teclado
+        document.addEventListener('keydown', (e) => {
+            if (e.key >= 0 && e.key <= 9) append(e.key);
+            if (['+', '-', '*', '/'].includes(e.key)) append(e.key);
+            if (e.key === 'Enter') compute();
+            if (e.key === 'Backspace') deleteLast();
+            if (e.key === 'Escape') clearAll();
         });
     </script>
 </body>
