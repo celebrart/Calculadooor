@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Calculadora Timeline</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="app-header">
+      <h1>CalcFlow</h1>
+      <button id="toggle-theme" aria-label="Alternar tema">
+        ☾
+      </button>
+    </header>
+
+    <main class="layout">
+      <!-- Bloco da calculadora -->
+      <section class="calculator glass-card">
+        <div class="display">
+          <div class="expression" id="expression">0</div>
+          <div class="result" id="result">0</div>
+        </div>
+
+        <div class="keypad">
+          <button data-action="clear" class="accent">AC</button>
+          <button data-action="back">⌫</button>
+          <button data-op="%" class="op">%</button>
+          <button data-op="÷" class="op">÷</button>
+
+          <button data-num="7">7</button>
+          <button data-num="8">8</button>
+          <button data-num="9">9</button>
+          <button data-op="×" class="op">×</button>
+
+          <button data-num="4">4</button>
+          <button data-num="5">5</button>
+          <button data-num="6">6</button>
+          <button data-op="−" class="op">−</button>
+
+          <button data-num="1">1</button>
+          <button data-num="2">2</button>
+          <button data-num="3">3</button>
+          <button data-op="+" class="op">+</button>
+
+          <button data-action="sign">±</button>
+          <button data-num="0" class="zero">0</button>
+          <button data-num=",">,</button>
+          <button data-action="equals" class="equals">=</button>
+        </div>
+      </section>
+
+      <!-- Bloco da timeline / histórico -->
+      <section class="history glass-card">
+        <div class="history-header">
+          <h2>Linha do tempo</h2>
+          <button id="clear-history">Limpar</button>
+        </div>
+        <div class="history-list" id="history-list">
+          <!-- cards são inseridos via JS -->
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
+
