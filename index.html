@@ -3,266 +3,219 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Eazy Notes | Premium OS</title>
+    <title>Eazy Notes Pro | 2026 Edition</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
         :root {
-            --bg: #030303;
-            --surface: #0d0d0f;
+            --bg: #020205;
+            --surface: rgba(13, 13, 17, 0.8);
             --primary: #00f2ff;
             --secondary: #7000ff;
-            --danger: #ff3366;
-            --text-main: #ffffff;
-            --text-dim: #88888e;
             --glass: rgba(255, 255, 255, 0.03);
-            --input-bg: rgba(255, 255, 255, 0.05);
+            --text-dim: #9494a3;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
 
         body {
             background: var(--bg);
-            color: var(--text-main);
+            color: #fff;
             min-height: 100vh;
-            padding-bottom: 50px;
-            background-image: radial-gradient(circle at 50% -20%, #1a1a2e, #030303);
+            overflow-x: hidden;
+            background-image: radial-gradient(circle at 50% -20%, #1a1a2e, #020205);
         }
 
-        .container { max-width: 500px; margin: 0 auto; padding: 20px; }
+        .container { padding: 20px; max-width: 1400px; margin: 0 auto; }
 
-        /* Header Refinado */
         header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 40px;
-            padding-top: 10px;
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 30px; padding: 20px 0;
         }
 
-        .brand h1 { font-weight: 800; font-size: 1.8rem; letter-spacing: -1.5px; background: linear-gradient(90deg, #fff, var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        #clock { font-weight: 400; color: var(--primary); font-size: 0.9rem; letter-spacing: 1px; }
+        .logo h1 { font-weight: 800; letter-spacing: -1.5px; background: linear-gradient(90deg, #fff, var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
-        /* Card de Input Pro */
-        .input-card {
-            background: var(--surface);
-            border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 28px;
-            padding: 24px;
-            margin-bottom: 30px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            transition: 0.3s ease;
+        /* Board Estilo Trello */
+        .board {
+            display: flex; gap: 20px; overflow-x: auto; padding-bottom: 20px;
+            scroll-snap-type: x mandatory;
         }
 
-        .input-card:focus-within {
-            border-color: rgba(0, 242, 255, 0.4);
-            box-shadow: 0 0 30px rgba(0, 242, 255, 0.1);
-        }
-
-        .field-wrapper { position: relative; margin-bottom: 15px; }
-        .field-wrapper i { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--text-dim); font-size: 0.9rem; }
-
-        input, select {
-            background: var(--input-bg);
-            border: 1px solid rgba(255,255,255,0.1);
-            padding: 14px 15px 14px 40px;
-            border-radius: 16px;
-            color: white;
-            font-size: 1rem;
-            width: 100%;
-            outline: none;
-            transition: 0.3s;
-        }
-
-        input:focus { background: rgba(255,255,255,0.08); border-color: var(--primary); }
-
-        .row { display: grid; grid-template-columns: 1.2fr 1fr; gap: 12px; }
-
-        /* Botão Salvar Premium */
-        .btn-main {
-            background: var(--primary);
-            color: #000;
-            border: none;
-            padding: 16px;
-            border-radius: 18px;
-            font-weight: 800;
-            font-size: 1rem;
-            cursor: pointer;
-            width: 100%;
-            margin-top: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            box-shadow: 0 10px 20px rgba(0, 242, 255, 0.2);
-            transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        .btn-main:active { transform: scale(0.96); }
-
-        /* Filtros */
-        .filters {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 30px;
-            overflow-x: auto;
-            padding: 5px 0;
-            scrollbar-width: none;
-        }
-
-        .filter-chip {
+        .column {
             background: var(--glass);
-            padding: 10px 20px;
-            border-radius: 50px;
-            font-size: 0.85rem;
-            white-space: nowrap;
-            color: var(--text-dim);
+            min-width: 320px; max-width: 320px;
+            border-radius: 24px; padding: 15px;
             border: 1px solid rgba(255,255,255,0.05);
-            transition: 0.3s;
+            backdrop-filter: blur(10px);
+            display: flex; flex-direction: column; gap: 15px;
+            scroll-snap-align: start;
         }
 
-        .filter-chip.active {
-            background: rgba(0, 242, 255, 0.1);
-            color: var(--primary);
-            border-color: var(--primary);
+        .column-header {
+            font-size: 0.8rem; font-weight: 800; text-transform: uppercase;
+            color: var(--primary); letter-spacing: 2px; padding-left: 10px;
         }
 
-        /* Estado Vazio */
-        .empty-state {
-            text-align: center;
-            padding: 40px 20px;
-            color: var(--text-dim);
-            animation: fadeIn 1s ease;
-        }
-
-        .empty-state i { font-size: 3rem; margin-bottom: 15px; opacity: 0.2; }
-
-        /* Cards de Nota */
-        .note-card {
+        /* Card Premium */
+        .card {
             background: var(--surface);
-            border-radius: 24px;
-            padding: 20px;
-            margin-bottom: 15px;
-            border: 1px solid rgba(255,255,255,0.05);
-            animation: slideUp 0.5s ease;
+            border-radius: 20px; padding: 18px;
+            border: 1px solid rgba(255,255,255,0.08);
+            cursor: grab; transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+            position: relative; animation: popIn 0.4s ease-out;
         }
 
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } }
+        @keyframes popIn { from { transform: scale(0.9); opacity: 0; } }
 
-        /* Cores de Categoria */
-        .cat-tag { font-size: 0.7rem; font-weight: 800; padding: 4px 10px; border-radius: 8px; margin-bottom: 10px; display: inline-block; }
+        .card.dragging { opacity: 0.5; transform: scale(0.95); cursor: grabbing; }
+        .card.locked { cursor: default; border-color: rgba(255,255,255,0.2); }
+
+        .card-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; outline: none; }
+        .card-time { font-size: 0.75rem; color: var(--text-dim); }
+
+        .card-footer {
+            margin-top: 15px; display: flex; justify-content: space-between; align-items: center;
+        }
+
+        .btn-icon { color: var(--text-dim); cursor: pointer; transition: 0.2s; }
+        .btn-icon:hover { color: #fff; }
+        .btn-icon.active { color: var(--primary); }
+
+        /* Modal / Input */
+        .quick-add {
+            background: var(--surface); padding: 20px; border-radius: 24px;
+            border: 1px solid var(--primary); margin-bottom: 40px;
+            display: grid; grid-template-columns: 2fr 1fr auto; gap: 15px;
+        }
+
+        input { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 12px; border-radius: 12px; color: #fff; outline: none; }
+        .btn-save { background: var(--primary); border: none; padding: 12px 25px; border-radius: 12px; font-weight: 800; cursor: pointer; }
 
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <header>
-            <div class="brand"><h1>Eazy Notes</h1></div>
-            <div id="clock">00:00:00</div>
-        </header>
+<div class="container">
+    <header>
+        <div class="logo"><h1>Eazy Notes Pro</h1></div>
+        <div id="clock" style="color: var(--primary)">00:00:00</div>
+    </header>
 
-        <div class="input-card">
-            <div class="field-wrapper">
-                <i class="fa-solid fa-pen-nib"></i>
-                <input type="text" id="taskTitle" placeholder="O que vamos fazer?">
-            </div>
-            
-            <div class="row">
-                <div class="field-wrapper">
-                    <i class="fa-solid fa-calendar-day"></i>
-                    <input type="datetime-local" id="taskDate">
-                </div>
-                <div class="field-wrapper">
-                    <i class="fa-solid fa-layer-group"></i>
-                    <select id="taskCat">
-                        <option value="Geral">Geral</option>
-                        <option value="Trabalho">Trabalho</option>
-                        <option value="Urgente">Urgente</option>
-                    </select>
-                </div>
-            </div>
-
-            <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 10px;">
-                <div style="display:flex; align-items:center; gap:10px;">
-                    <label style="font-size:0.75rem; color:var(--text-dim)">Cor:</label>
-                    <input type="color" id="taskColor" value="#00f2ff" style="width:35px; height:35px; padding:2px; border-radius:50%; border:none;">
-                </div>
-                <button class="btn-main" onclick="addNote()">
-                    Salvar Nota <i class="fa-solid fa-arrow-right"></i>
-                </button>
-            </div>
-        </div>
-
-        <div class="filters">
-            <div class="filter-chip active">Todas</div>
-            <div class="filter-chip">Hoje</div>
-            <div class="filter-chip">Trabalho</div>
-            <div class="filter-chip">Urgente</div>
-        </div>
-
-        <div id="notesList">
-            <div class="empty-state">
-                <i class="fa-solid fa-wind"></i>
-                <p>Sua mente está limpa.<br>Que tal planejar algo novo?</p>
-            </div>
-        </div>
+    <div class="quick-add">
+        <input type="text" id="newTitle" placeholder="Título da tarefa...">
+        <input type="color" id="newColor" value="#00f2ff" style="height: 45px; width: 100%;">
+        <button class="btn-save" onclick="createNewTask()">Adicionar</button>
     </div>
 
-    <audio id="alertSfx" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3"></audio>
+    <div class="board">
+        <div class="column" id="col-hoje" ondrop="drop(event)" ondragover="allowDrop(event)">
+            <div class="column-header">Hoje</div>
+            </div>
 
-    <script>
-        let notes = JSON.parse(localStorage.getItem('eazy_notes_db')) || [];
+        <div class="column" id="col-amanha" ondrop="drop(event)" ondragover="allowDrop(event)">
+            <div class="column-header">Amanhã</div>
+        </div>
 
-        function addNote() {
-            const title = document.getElementById('taskTitle').value;
-            const date = document.getElementById('taskDate').value;
-            const cat = document.getElementById('taskCat').value;
-            const color = document.getElementById('taskColor').value;
+        <div class="column" id="col-semana" ondrop="drop(event)" ondragover="allowDrop(event)">
+            <div class="column-header">Próximos Dias</div>
+        </div>
+    </div>
+</div>
 
-            if (!title || !date) return alert("Preencha os campos!");
+<script>
+    let db = JSON.parse(localStorage.getItem('eazynotes_kanban')) || [];
 
-            const newNote = { id: Date.now(), title, date, cat, color, locked: false };
-            notes.unshift(newNote);
-            save();
-            document.getElementById('taskTitle').value = '';
-        }
+    function createNewTask() {
+        const title = document.getElementById('newTitle').value;
+        const color = document.getElementById('newColor').value;
+        if(!title) return;
 
-        function save() {
-            localStorage.setItem('eazy_notes_db', JSON.stringify(notes));
-            render();
-        }
+        const task = {
+            id: 'task-' + Date.now(),
+            title: title,
+            color: color,
+            column: 'col-hoje',
+            locked: false
+        };
 
-        function render() {
-            const list = document.getElementById('notesList');
-            if (notes.length === 0) {
-                list.innerHTML = `<div class="empty-state"><i class="fa-solid fa-wind"></i><p>Sua mente está limpa.</p></div>`;
-                return;
-            }
+        db.push(task);
+        saveAndRender();
+        document.getElementById('newTitle').value = '';
+    }
 
-            list.innerHTML = notes.map(n => `
-                <div class="note-card" style="border-left: 4px solid ${n.color}">
-                    <span class="cat-tag" style="background:${n.color}22; color:${n.color}">${n.cat}</span>
-                    <h3>${n.title}</h3>
-                    <div style="display:flex; justify-content:space-between; align-items:center; margin-top:15px; font-size:0.8rem; color:var(--text-dim)">
-                        <span><i class="fa-regular fa-clock"></i> ${new Date(n.date).toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'})}</span>
-                        <i class="fa-solid fa-trash-can" onclick="deleteNote(${n.id})" style="cursor:pointer"></i>
+    function saveAndRender() {
+        localStorage.setItem('eazynotes_kanban', JSON.stringify(db));
+        
+        // Limpar colunas
+        document.querySelectorAll('.column').forEach(col => {
+            const header = col.querySelector('.column-header');
+            col.innerHTML = '';
+            col.appendChild(header);
+        });
+
+        db.forEach(task => {
+            const card = document.createElement('div');
+            card.className = `card ${task.locked ? 'locked' : ''}`;
+            card.id = task.id;
+            card.draggable = !task.locked;
+            card.style.borderLeft = `5px solid ${task.color}`;
+            card.setAttribute('ondragstart', 'drag(event)');
+
+            card.innerHTML = `
+                <div class="card-title">${task.title}</div>
+                <div class="card-footer">
+                    <div class="card-time"><i class="fa-regular fa-calendar"></i> Agendado</div>
+                    <div class="actions">
+                        <i class="fa-solid ${task.locked ? 'fa-lock' : 'fa-lock-open'} btn-icon ${task.locked ? 'active' : ''}" 
+                           onclick="toggleLock('${task.id}')"></i>
+                        <i class="fa-solid fa-trash-can btn-icon" style="margin-left:10px" onclick="removeTask('${task.id}')"></i>
                     </div>
                 </div>
-            `).join('');
+            `;
+            document.getElementById(task.column).appendChild(card);
+        });
+    }
+
+    // Drag & Drop Engine
+    function allowDrop(ev) { ev.preventDefault(); }
+    
+    function drag(ev) {
+        ev.dataTransfer.setData("text", ev.target.id);
+        ev.target.classList.add('dragging');
+    }
+
+    function drop(ev) {
+        ev.preventDefault();
+        const id = ev.dataTransfer.getData("text");
+        const column = ev.target.closest('.column');
+        
+        if (column) {
+            const task = db.find(t => t.id === id);
+            if(!task.locked) {
+                task.column = column.id;
+                saveAndRender();
+            }
         }
+    }
 
-        function deleteNote(id) {
-            notes = notes.filter(n => n.id !== id);
-            save();
-        }
+    function toggleLock(id) {
+        const task = db.find(t => t.id === id);
+        task.locked = !task.locked;
+        saveAndRender();
+    }
 
-        setInterval(() => {
-            document.getElementById('clock').innerText = new Date().toLocaleTimeString('pt-BR');
-        }, 1000);
+    function removeTask(id) {
+        const task = db.find(t => t.id === id);
+        if(task.locked) return alert("Desbloqueie o card para excluir!");
+        db = db.filter(t => t.id !== id);
+        saveAndRender();
+    }
 
-        render();
-    </script>
+    setInterval(() => {
+        document.getElementById('clock').innerText = new Date().toLocaleTimeString('pt-BR');
+    }, 1000);
+
+    saveAndRender();
+</script>
 </body>
 </html>
