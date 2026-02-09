@@ -1,70 +1,177 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
-  <meta charset="UTF-8" />
-  <title>Calculadora Timeline</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora Glassmorphism</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(45deg, #0f0c29, #302b63, #24243e);
+        }
+
+        /* Container da Calculadora */
+        .calculator {
+            position: relative;
+            width: 350px;
+            padding: 20px;
+            border-radius: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Display */
+        .display {
+            width: 100%;
+            height: 100px;
+            background: rgba(255, 255, 255, 0.05);
+            border: none;
+            outline: none;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            color: #fff;
+            text-align: right;
+            padding: 20px;
+            font-size: 2.5em;
+            font-weight: 300;
+        }
+
+        /* Grade de Botões */
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+
+        button {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        button:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-5px);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        /* Cores Especiais */
+        .operator {
+            color: #00d2ff;
+            font-weight: 600;
+        }
+
+        .clear {
+            color: #ff4b2b;
+        }
+
+        .equal {
+            background: #00d2ff;
+            color: #fff;
+            box-shadow: 0 0 20px rgba(0, 210, 255, 0.5);
+        }
+
+        .equal:hover {
+            background: #fff;
+            color: #00d2ff;
+        }
+
+        /* Botão Zero Estendido */
+        .zero {
+            grid-column: span 2;
+            width: 135px;
+            border-radius: 30px;
+        }
+    </style>
 </head>
 <body>
-  <div class="app">
-    <header class="app-header">
-      <h1>CalcFlow</h1>
-      <button id="toggle-theme" aria-label="Alternar tema">
-        ☾
-      </button>
-    </header>
 
-    <main class="layout">
-      <!-- Bloco da calculadora -->
-      <section class="calculator glass-card">
-        <div class="display">
-          <div class="expression" id="expression">0</div>
-          <div class="result" id="result">0</div>
+    <div class="calculator">
+        <input type="text" class="display" id="display" disabled>
+        <div class="buttons">
+            <button class="clear" onclick="clearDisplay()">C</button>
+            <button class="operator" onclick="appendToDisplay('/')">/</button>
+            <button class="operator" onclick="appendToDisplay('*')">×</button>
+            <button class="operator" onclick="backspace()">⌫</button>
+            
+            <button onclick="appendToDisplay('7')">7</button>
+            <button onclick="appendToDisplay('8')">8</button>
+            <button onclick="appendToDisplay('9')">9</button>
+            <button class="operator" onclick="appendToDisplay('-')">-</button>
+            
+            <button onclick="appendToDisplay('4')">4</button>
+            <button onclick="appendToDisplay('5')">5</button>
+            <button onclick="appendToDisplay('6')">6</button>
+            <button class="operator" onclick="appendToDisplay('+')">+</button>
+            
+            <button onclick="appendToDisplay('1')">1</button>
+            <button onclick="appendToDisplay('2')">2</button>
+            <button onclick="appendToDisplay('3')">3</button>
+            <button class="equal" onclick="calculate()">=</button>
+            
+            <button class="zero" onclick="appendToDisplay('0')">0</button>
+            <button onclick="appendToDisplay('.')">.</button>
         </div>
+    </div>
 
-        <div class="keypad">
-          <button data-action="clear" class="accent">AC</button>
-          <button data-action="back">⌫</button>
-          <button data-op="%" class="op">%</button>
-          <button data-op="÷" class="op">÷</button>
+    <script>
+        const display = document.getElementById('display');
 
-          <button data-num="7">7</button>
-          <button data-num="8">8</button>
-          <button data-num="9">9</button>
-          <button data-op="×" class="op">×</button>
+        function appendToDisplay(input) {
+            display.value += input;
+        }
 
-          <button data-num="4">4</button>
-          <button data-num="5">5</button>
-          <button data-num="6">6</button>
-          <button data-op="−" class="op">−</button>
+        function clearDisplay() {
+            display.value = "";
+        }
 
-          <button data-num="1">1</button>
-          <button data-num="2">2</button>
-          <button data-num="3">3</button>
-          <button data-op="+" class="op">+</button>
+        function backspace() {
+            display.value = display.value.slice(0, -1);
+        }
 
-          <button data-action="sign">±</button>
-          <button data-num="0" class="zero">0</button>
-          <button data-num=",">,</button>
-          <button data-action="equals" class="equals">=</button>
-        </div>
-      </section>
+        function calculate() {
+            try {
+                // eval realiza o cálculo da string no display
+                display.value = eval(display.value);
+            } catch (error) {
+                display.value = "Erro";
+                setTimeout(clearDisplay, 1500);
+            }
+        }
 
-      <!-- Bloco da timeline / histórico -->
-      <section class="history glass-card">
-        <div class="history-header">
-          <h2>Linha do tempo</h2>
-          <button id="clear-history">Limpar</button>
-        </div>
-        <div class="history-list" id="history-list">
-          <!-- cards são inseridos via JS -->
-        </div>
-      </section>
-    </main>
-  </div>
-
-  <script src="script.js"></script>
+        // Suporte para teclado
+        document.addEventListener('keydown', (event) => {
+            const key = event.key;
+            if (/[0-9]/.test(key)) appendToDisplay(key);
+            if (['+', '-', '*', '/'].includes(key)) appendToDisplay(key);
+            if (key === 'Enter' || key === '=') calculate();
+            if (key === 'Backspace') backspace();
+            if (key === 'Escape') clearDisplay();
+        });
+    </script>
 </body>
 </html>
-
