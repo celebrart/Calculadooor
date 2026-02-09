@@ -3,266 +3,320 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora Pro 2026 | Ultra-Modern</title>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
+    <title>Agenda OS Pro Max | v2026</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --bg: #08080a;
-            --accent: #00ffa3;
+            --bg: #050507;
+            --surface: #111116;
+            --accent: #00f2ff;
             --glass: rgba(255, 255, 255, 0.03);
-            --text: #ffffff;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Outfit', sans-serif; }
 
         body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            background: var(--bg);
+            color: #e0e0e0;
             min-height: 100vh;
-            background: radial-gradient(circle at top left, #121217, #08080a);
-            color: var(--text);
-            overflow: hidden;
-        }
-
-        /* Fundo Animado */
-        body::before {
-            content: '';
-            position: absolute;
-            width: 300px; height: 300px;
-            background: var(--accent);
-            filter: blur(150px);
-            opacity: 0.15;
-            top: 10%; left: 10%;
-            z-index: -1;
-            animation: move 10s infinite alternate;
-        }
-
-        @keyframes move { from { transform: translate(0, 0); } to { transform: translate(100px, 100px); } }
-
-        .app-container {
-            position: relative;
-            width: 400px;
-            background: var(--glass);
-            backdrop-filter: blur(40px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 40px;
             padding: 30px;
-            box-shadow: 0 40px 100px rgba(0,0,0,0.5);
+            background-image: radial-gradient(circle at 50% -20%, #1a1a2e, #050507);
         }
 
-        /* Display Futurista */
-        .display-area {
-            text-align: right;
+        .container { max-width: 1300px; margin: 0 auto; }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 30px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
             margin-bottom: 30px;
         }
 
-        #history-display {
-            font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.4);
-            min-height: 20px;
-            margin-bottom: 5px;
-        }
-
-        #main-display {
-            font-size: 3.5rem;
-            font-weight: 300;
-            word-wrap: break-word;
-            overflow: hidden;
-        }
-
-        /* Grade de Botões */
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 15px;
-        }
-
-        .scientific {
-            display: none; /* Escondido por padrão */
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-            margin-bottom: 15px;
-            animation: fadeIn 0.5s ease;
-        }
-
-        button {
-            border: none;
-            outline: none;
-            background: rgba(255, 255, 255, 0.05);
-            color: var(--text);
-            height: 70px;
-            border-radius: 20px;
-            font-size: 1.2rem;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        button:hover {
-            background: rgba(255, 255, 255, 0.15);
-            transform: scale(1.05);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-        }
-
-        button:active { transform: scale(0.95); }
-
-        .op { color: var(--accent); font-weight: bold; }
-        .special { background: rgba(0, 255, 163, 0.1); color: var(--accent); }
+        .logo h1 { font-size: 1.8rem; background: linear-gradient(90deg, #fff, var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         
-        #btn-equal {
+        #relogio { font-size: 1.2rem; color: var(--accent); letter-spacing: 2px; }
+
+        /* Barra de Criação */
+        .command-bar {
+            background: var(--surface);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 20px;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr auto auto;
+            gap: 15px;
+            margin-bottom: 40px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+
+        input, select {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 12px;
+            border-radius: 12px;
+            color: white;
+            outline: none;
+        }
+
+        .btn-add {
             background: var(--accent);
             color: #000;
-            font-weight: bold;
-            grid-column: span 2;
-        }
-
-        #btn-equal:hover {
-            box-shadow: 0 0 30px rgba(0, 255, 163, 0.4);
-        }
-
-        /* Toggle Modo Científico */
-        .mode-toggle {
-            text-align: center;
-            margin-bottom: 20px;
-            font-size: 0.8rem;
-            color: var(--accent);
+            border: none;
+            padding: 0 25px;
+            border-radius: 12px;
+            font-weight: 700;
             cursor: pointer;
-            text-transform: uppercase;
-            letter-spacing: 2px;
+            transition: 0.3s;
         }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        .btn-add:hover { transform: scale(1.05); box-shadow: 0 0 20px rgba(0,242,255,0.4); }
+
+        /* Grid */
+        .agenda-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 25px;
+        }
+
+        .card-pro {
+            background: var(--surface);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 24px;
+            padding: 24px;
+            position: relative;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border-top: 4px solid var(--accent);
+        }
+
+        .card-pro.locked { opacity: 0.8; filter: grayscale(0.5); }
+        .card-pro.imminent { animation: pulse-alert 1.5s infinite; }
+
+        @keyframes pulse-alert {
+            0% { border-color: #ff3366; box-shadow: 0 0 0 0 rgba(255, 51, 102, 0.4); }
+            70% { box-shadow: 0 0 0 20px rgba(255, 51, 102, 0); }
+            100% { border-color: #ff3366; box-shadow: 0 0 0 0 rgba(255, 51, 102, 0); }
+        }
+
+        .editable { outline: none; margin-bottom: 10px; }
+        .card-pro h3 { font-size: 1.3rem; color: #fff; }
+        .card-pro p { color: #888; font-size: 0.95rem; min-height: 40px; }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .time-tag { font-size: 0.8rem; font-weight: 600; color: var(--accent); }
+
+        .actions { display: flex; gap: 10px; align-items: center; }
+        .action-btn { background: none; border: none; color: #555; cursor: pointer; transition: 0.3s; }
+        .action-btn:hover { color: #fff; }
+        .active-lock { color: var(--accent) !important; }
+
+        input[type="color"] {
+            -webkit-appearance: none;
+            width: 25px; height: 25px;
+            border: none; border-radius: 50%;
+            cursor: pointer; background: none;
+        }
+        input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
+        input[type="color"]::-webkit-color-swatch { border: none; border-radius: 50%; }
+
+        /* Toast de Lembrete */
+        #toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #ff3366;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 15px;
+            font-weight: 700;
+            display: none;
+            z-index: 10000;
+            box-shadow: 0 10px 40px rgba(255,51,102,0.4);
+            animation: slideIn 0.5s ease;
+        }
+        @keyframes slideIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
     </style>
 </head>
-<body>
+<body ondrop="drop(event)" ondragover="allowDrop(event)">
 
-    <div class="app-container">
-        <div class="mode-toggle" onclick="toggleScientific()">Modo Avançado</div>
-        
-        <div class="display-area">
-            <div id="history-display"></div>
-            <div id="main-display">0</div>
+    <div id="toast">Lembrete: Tarefa em 10 minutos!</div>
+
+    <div class="container">
+        <header>
+            <div class="logo"><h1>AGENDA PRO MAX</h1></div>
+            <div id="relogio">00:00:00</div>
+        </header>
+
+        <div class="command-bar">
+            <input type="text" id="taskTitle" placeholder="Título da tarefa...">
+            <input type="datetime-local" id="taskDate">
+            <input type="color" id="taskColor" value="#00f2ff">
+            <button class="btn-add" onclick="addTask()">CRIAR TASK</button>
+            <small style="grid-column: span 5; color: #555; margin-top: 5px;">* O lembrete tocará 10 minutos antes.</small>
         </div>
 
-        <div id="scientific-keys" class="scientific">
-            <button onclick="scientific('sin')">sin</button>
-            <button onclick="scientific('cos')">cos</button>
-            <button onclick="scientific('tan')">tan</button>
-            <button onclick="scientific('log')">log</button>
-            <button onclick="scientific('pow')">xʸ</button>
-            <button onclick="scientific('sqrt')">√</button>
-            <button onclick="scientific('pi')">π</button>
-            <button onclick="scientific('e')">e</button>
-        </div>
-
-        <div class="grid">
-            <button class="special" onclick="clearAll()">AC</button>
-            <button class="special" onclick="deleteLast()">DEL</button>
-            <button class="op" onclick="append('%')">%</button>
-            <button class="op" onclick="append('/')">÷</button>
-
-            <button onclick="append('7')">7</button>
-            <button onclick="append('8')">8</button>
-            <button onclick="append('9')">9</button>
-            <button class="op" onclick="append('*')">×</button>
-
-            <button onclick="append('4')">4</button>
-            <button onclick="append('5')">5</button>
-            <button onclick="append('6')">6</button>
-            <button class="op" onclick="append('-')">−</button>
-
-            <button onclick="append('1')">1</button>
-            <button onclick="append('2')">2</button>
-            <button onclick="append('3')">3</button>
-            <button class="op" onclick="append('+')">+</button>
-
-            <button onclick="append('0')">0</button>
-            <button onclick="append('.')">.</button>
-            <button id="btn-equal" onclick="compute()">=</button>
-        </div>
+        <div class="agenda-grid" id="agendaGrid"></div>
     </div>
 
+    <audio id="notifSound" preload="auto">
+        <source src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3" type="audio/mpeg">
+    </audio>
+
     <script>
-        let currentInput = '0';
-        let history = '';
-        let isScientific = false;
+        let tasks = JSON.parse(localStorage.getItem('agenda_2026_db')) || [];
+        let notified = new Set(); // Evita notificações duplicadas
 
-        const mainDisplay = document.getElementById('main-display');
-        const historyDisplay = document.getElementById('history-display');
+        function addTask() {
+            const title = document.getElementById('taskTitle').value;
+            const date = document.getElementById('taskDate').value;
+            const color = document.getElementById('taskColor').value;
 
-        function updateDisplay() {
-            mainDisplay.innerText = currentInput;
-            historyDisplay.innerText = history;
-            
-            // Ajuste de fonte para números grandes
-            if (currentInput.length > 8) mainDisplay.style.fontSize = '2.5rem';
-            else mainDisplay.style.fontSize = '3.5rem';
+            if (!title || !date) return alert("Preencha título e data!");
+
+            const newTask = {
+                id: 'id-' + Date.now(),
+                title,
+                date,
+                color,
+                desc: 'Clique aqui para editar a descrição...',
+                locked: false
+            };
+
+            tasks.push(newTask);
+            saveAndRender();
+            // Limpa campos
+            document.getElementById('taskTitle').value = '';
         }
 
-        function append(char) {
-            if (currentInput === '0' && char !== '.') currentInput = char;
-            else currentInput += char;
-            updateDisplay();
+        function saveAndRender() {
+            localStorage.setItem('agenda_2026_db', JSON.stringify(tasks));
+            const grid = document.getElementById('agendaGrid');
+            grid.innerHTML = '';
+
+            tasks.forEach((t) => {
+                const diffMin = getDiffMinutes(t.date);
+                const isImminent = diffMin > 0 && diffMin <= 10;
+
+                const card = document.createElement('div');
+                card.className = `card-pro ${t.locked ? 'locked' : ''} ${isImminent ? 'imminent' : ''}`;
+                card.style.borderTopColor = t.color;
+                card.id = t.id;
+                card.draggable = !t.locked;
+                card.setAttribute('ondragstart', 'drag(event)');
+
+                card.innerHTML = `
+                    <h3 contenteditable="${!t.locked}" class="editable" onblur="updateTask('${t.id}', 'title', this.innerText)">${t.title}</h3>
+                    <p contenteditable="${!t.locked}" class="editable" onblur="updateTask('${t.id}', 'desc', this.innerText)">${t.desc}</p>
+                    <div class="card-footer">
+                        <div class="time-tag" style="color: ${t.color}">
+                            <i class="fa-regular fa-clock"></i> ${formatTime(t.date)}
+                        </div>
+                        <div class="actions">
+                            <input type="color" value="${t.color}" onchange="updateTask('${t.id}', 'color', this.value)" ${t.locked ? 'disabled' : ''}>
+                            <button class="action-btn ${t.locked ? 'active-lock' : ''}" onclick="toggleLock('${t.id}')">
+                                <i class="fa-solid fa-${t.locked ? 'lock' : 'lock-open'}"></i>
+                            </button>
+                            <button class="action-btn" onclick="deleteTask('${t.id}')">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
         }
 
-        function clearAll() {
-            currentInput = '0';
-            history = '';
-            updateDisplay();
+        // --- Lógica de Lembrete e Tempo ---
+        function getDiffMinutes(targetDate) {
+            const now = new Date();
+            const target = new Date(targetDate);
+            return (target - now) / 60000;
         }
 
-        function deleteLast() {
-            currentInput = currentInput.slice(0, -1) || '0';
-            updateDisplay();
+        function checkReminders() {
+            tasks.forEach(t => {
+                const diff = getDiffMinutes(t.date);
+                // Se faltar entre 0 e 10 minutos e ainda não notificamos hoje
+                if (diff <= 10 && diff > 0 && !notified.has(t.id)) {
+                    showToast(`🚨 LEMBRETE: "${t.title}" começa em breve!`);
+                    document.getElementById('notifSound').play().catch(() => {
+                        console.log("Interação do usuário necessária para som.");
+                    });
+                    notified.add(t.id);
+                    saveAndRender(); // Atualiza para brilhar o card
+                }
+            });
         }
 
-        function compute() {
-            try {
-                // Sanitização e cálculo
-                let expression = currentInput.replace('×', '*').replace('÷', '/');
-                history = currentInput + ' =';
-                currentInput = String(Number(eval(expression).toFixed(8))); // Limita precisão decimal
-                updateDisplay();
-            } catch {
-                currentInput = "Erro";
-                updateDisplay();
-                setTimeout(clearAll, 1000);
+        // --- Utilitários ---
+        function updateTask(id, field, val) {
+            const index = tasks.findIndex(t => t.id === id);
+            if (index > -1 && !tasks[index].locked) {
+                tasks[index][field] = val;
+                if(field === 'color') saveAndRender();
+                else localStorage.setItem('agenda_2026_db', JSON.stringify(tasks));
             }
         }
 
-        function toggleScientific() {
-            isScientific = !isScientific;
-            document.getElementById('scientific-keys').style.display = isScientific ? 'grid' : 'none';
-            document.querySelector('.mode-toggle').innerText = isScientific ? 'Modo Simples' : 'Modo Avançado';
+        function toggleLock(id) {
+            const index = tasks.findIndex(t => t.id === id);
+            tasks[index].locked = !tasks[index].locked;
+            saveAndRender();
         }
 
-        function scientific(func) {
-            let val = parseFloat(currentInput);
-            history = `${func}(${currentInput}) =`;
-            switch(func) {
-                case 'sin': currentInput = Math.sin(val).toFixed(4); break;
-                case 'cos': currentInput = Math.cos(val).toFixed(4); break;
-                case 'tan': currentInput = Math.tan(val).toFixed(4); break;
-                case 'log': currentInput = Math.log10(val).toFixed(4); break;
-                case 'sqrt': currentInput = Math.sqrt(val).toFixed(4); break;
-                case 'pi': currentInput = Math.PI.toFixed(6); break;
-                case 'e': currentInput = Math.E.toFixed(6); break;
-                case 'pow': currentInput += '**'; break;
+        function deleteTask(id) {
+            const t = tasks.find(x => x.id === id);
+            if(t.locked) return showToast("Desbloqueie para excluir!");
+            tasks = tasks.filter(t => t.id !== id);
+            saveAndRender();
+        }
+
+        function formatTime(ds) {
+            const d = new Date(ds);
+            return d.toLocaleDateString('pt-BR', {hour:'2-digit', minute:'2-digit'});
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            toast.innerText = msg;
+            toast.style.display = 'block';
+            setTimeout(() => toast.style.display = 'none', 5000);
+        }
+
+        // --- Drag and Drop ---
+        function allowDrop(ev) { ev.preventDefault(); }
+        function drag(ev) { ev.dataTransfer.setData("text", ev.target.id); }
+        function drop(ev) {
+            ev.preventDefault();
+            const draggedId = ev.dataTransfer.getData("text");
+            const target = ev.target.closest('.card-pro');
+            if (target && target.id !== draggedId) {
+                const fromIdx = tasks.findIndex(t => t.id === draggedId);
+                const toIdx = tasks.findIndex(t => t.id === target.id);
+                const [moved] = tasks.splice(fromIdx, 1);
+                tasks.splice(toIdx, 0, moved);
+                saveAndRender();
             }
-            updateDisplay();
         }
 
-        // Suporte a teclado
-        document.addEventListener('keydown', (e) => {
-            if (e.key >= 0 && e.key <= 9) append(e.key);
-            if (['+', '-', '*', '/'].includes(e.key)) append(e.key);
-            if (e.key === 'Enter') compute();
-            if (e.key === 'Backspace') deleteLast();
-            if (e.key === 'Escape') clearAll();
-        });
+        // Loop principal (1 segundo)
+        setInterval(() => {
+            const agora = new Date();
+            document.getElementById('relogio').innerText = agora.toLocaleTimeString('pt-BR');
+            checkReminders();
+        }, 1000);
+
+        saveAndRender();
     </script>
 </body>
 </html>
