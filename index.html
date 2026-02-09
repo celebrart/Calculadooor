@@ -2,318 +2,358 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agenda OS Pro Max | v2026</title>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Eazy Notes | OS 2026</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
         :root {
-            --bg: #050507;
-            --surface: #111116;
-            --accent: #00f2ff;
+            --bg: #030303;
+            --surface: #0d0d0f;
+            --primary: #00f2ff;
+            --secondary: #7000ff;
+            --danger: #ff3366;
+            --text-main: #ffffff;
+            --text-dim: #88888e;
             --glass: rgba(255, 255, 255, 0.03);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Outfit', sans-serif; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
 
         body {
             background: var(--bg);
-            color: #e0e0e0;
+            color: var(--text-main);
             min-height: 100vh;
-            padding: 30px;
-            background-image: radial-gradient(circle at 50% -20%, #1a1a2e, #050507);
+            padding-bottom: 100px; /* Espaço para barra mobile */
+            overflow-x: hidden;
         }
 
-        .container { max-width: 1300px; margin: 0 auto; }
+        /* Ambient Background */
+        .ambient-light {
+            position: fixed;
+            top: -100px;
+            right: -100px;
+            width: 400px;
+            height: 400px;
+            background: var(--secondary);
+            filter: blur(150px);
+            opacity: 0.15;
+            z-index: -1;
+            pointer-events: none;
+        }
 
+        .container { max-width: 800px; margin: 0 auto; padding: 20px; }
+
+        /* Header */
         header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding-bottom: 30px;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
             margin-bottom: 30px;
+            padding: 10px 0;
         }
 
-        .logo h1 { font-size: 1.8rem; background: linear-gradient(90deg, #fff, var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .brand h1 { font-weight: 800; font-size: 1.8rem; letter-spacing: -1px; background: linear-gradient(90deg, #fff, var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         
-        #relogio { font-size: 1.2rem; color: var(--accent); letter-spacing: 2px; }
+        #clock { font-weight: 300; color: var(--primary); font-size: 0.9rem; opacity: 0.8; }
 
-        /* Barra de Criação */
-        .command-bar {
+        /* Input Area (Mobile Optimized) */
+        .input-card {
             background: var(--surface);
             border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 20px;
+            border-radius: 24px;
             padding: 20px;
-            display: grid;
-            grid-template-columns: 2fr 1fr 1fr auto auto;
-            gap: 15px;
-            margin-bottom: 40px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            margin-bottom: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
         }
+
+        .input-group { display: flex; flex-direction: column; gap: 12px; }
 
         input, select {
-            background: rgba(255,255,255,0.03);
+            background: rgba(255,255,255,0.05);
             border: 1px solid rgba(255,255,255,0.1);
-            padding: 12px;
-            border-radius: 12px;
+            padding: 14px 18px;
+            border-radius: 16px;
             color: white;
-            outline: none;
-        }
-
-        .btn-add {
-            background: var(--accent);
-            color: #000;
-            border: none;
-            padding: 0 25px;
-            border-radius: 12px;
-            font-weight: 700;
-            cursor: pointer;
+            font-size: 1rem;
+            width: 100%;
             transition: 0.3s;
         }
 
-        .btn-add:hover { transform: scale(1.05); box-shadow: 0 0 20px rgba(0,242,255,0.4); }
+        input:focus { border-color: var(--primary); background: rgba(255,255,255,0.08); }
 
-        /* Grid */
-        .agenda-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 25px;
-        }
+        .row { display: flex; gap: 10px; }
 
-        .card-pro {
-            background: var(--surface);
-            border: 1px solid rgba(255,255,255,0.06);
-            border-radius: 24px;
-            padding: 24px;
-            position: relative;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            border-top: 4px solid var(--accent);
-        }
-
-        .card-pro.locked { opacity: 0.8; filter: grayscale(0.5); }
-        .card-pro.imminent { animation: pulse-alert 1.5s infinite; }
-
-        @keyframes pulse-alert {
-            0% { border-color: #ff3366; box-shadow: 0 0 0 0 rgba(255, 51, 102, 0.4); }
-            70% { box-shadow: 0 0 0 20px rgba(255, 51, 102, 0); }
-            100% { border-color: #ff3366; box-shadow: 0 0 0 0 rgba(255, 51, 102, 0); }
-        }
-
-        .editable { outline: none; margin-bottom: 10px; }
-        .card-pro h3 { font-size: 1.3rem; color: #fff; }
-        .card-pro p { color: #888; font-size: 0.95rem; min-height: 40px; }
-
-        .card-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 20px;
-            padding-top: 15px;
-            border-top: 1px solid rgba(255,255,255,0.05);
-        }
-
-        .time-tag { font-size: 0.8rem; font-weight: 600; color: var(--accent); }
-
-        .actions { display: flex; gap: 10px; align-items: center; }
-        .action-btn { background: none; border: none; color: #555; cursor: pointer; transition: 0.3s; }
-        .action-btn:hover { color: #fff; }
-        .active-lock { color: var(--accent) !important; }
-
-        input[type="color"] {
-            -webkit-appearance: none;
-            width: 25px; height: 25px;
-            border: none; border-radius: 50%;
-            cursor: pointer; background: none;
-        }
-        input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
-        input[type="color"]::-webkit-color-swatch { border: none; border-radius: 50%; }
-
-        /* Toast de Lembrete */
-        #toast {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: #ff3366;
-            color: white;
-            padding: 15px 30px;
-            border-radius: 15px;
+        .btn-main {
+            background: var(--primary);
+            color: #000;
+            border: none;
+            padding: 16px;
+            border-radius: 16px;
             font-weight: 700;
-            display: none;
-            z-index: 10000;
-            box-shadow: 0 10px 40px rgba(255,51,102,0.4);
-            animation: slideIn 0.5s ease;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            width: 100%;
         }
-        @keyframes slideIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
+
+        .btn-main:active { transform: scale(0.95); }
+
+        /* Tabs/Filters */
+        .filters {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            overflow-x: auto;
+            padding-bottom: 5px;
+        }
+
+        .filter-chip {
+            background: var(--glass);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            white-space: nowrap;
+            cursor: pointer;
+            border: 1px solid transparent;
+        }
+
+        .filter-chip.active { border-color: var(--primary); color: var(--primary); }
+
+        /* Notes Cards */
+        .notes-list { display: flex; flex-direction: column; gap: 16px; }
+
+        .note-card {
+            background: var(--surface);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 24px;
+            padding: 20px;
+            position: relative;
+            transition: 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            animation: slideUp 0.5s ease backwards;
+        }
+
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } }
+
+        .note-card.locked { opacity: 0.7; }
+        
+        .progress-bar {
+            position: absolute;
+            top: 0; left: 0;
+            height: 3px;
+            background: var(--primary);
+            width: 0%;
+            transition: width 1s linear;
+            border-radius: 24px 24px 0 0;
+        }
+
+        .note-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+        .note-category { font-size: 0.65rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; padding: 4px 10px; border-radius: 8px; }
+
+        .note-content h3 { font-size: 1.1rem; margin-bottom: 6px; outline: none; }
+        .note-content p { font-size: 0.9rem; color: var(--text-dim); line-height: 1.4; outline: none; }
+
+        .note-footer {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-top: 15px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .note-time { font-size: 0.75rem; color: var(--primary); font-weight: 600; }
+
+        .note-actions { display: flex; gap: 15px; align-items: center; }
+        .action-icon { color: #555; font-size: 1.1rem; cursor: pointer; transition: 0.2s; }
+        .action-icon:hover { color: #fff; }
+        .action-icon.active { color: var(--primary); }
+
+        /* Notification Toast */
+        #notification {
+            position: fixed;
+            top: 20px; left: 50%; transform: translateX(-50%);
+            background: var(--danger);
+            color: white; padding: 12px 25px; border-radius: 50px;
+            font-size: 0.9rem; font-weight: 700; z-index: 9999;
+            box-shadow: 0 10px 30px rgba(255,51,102,0.3);
+            display: none;
+        }
+
+        /* Imminent Pulse */
+        .pulse-urgent { border-color: var(--danger) !important; box-shadow: 0 0 20px rgba(255,51,102,0.2); }
     </style>
 </head>
-<body ondrop="drop(event)" ondragover="allowDrop(event)">
+<body>
 
-    <div id="toast">Lembrete: Tarefa em 10 minutos!</div>
+    <div class="ambient-light"></div>
+    <div id="notification">Lembrete Ativado!</div>
 
     <div class="container">
         <header>
-            <div class="logo"><h1>AGENDA PRO MAX</h1></div>
-            <div id="relogio">00:00:00</div>
+            <div class="brand">
+                <h1>Eazy Notes</h1>
+            </div>
+            <div id="clock">00:00:00</div>
         </header>
 
-        <div class="command-bar">
-            <input type="text" id="taskTitle" placeholder="Título da tarefa...">
-            <input type="datetime-local" id="taskDate">
-            <input type="color" id="taskColor" value="#00f2ff">
-            <button class="btn-add" onclick="addTask()">CRIAR TASK</button>
-            <small style="grid-column: span 5; color: #555; margin-top: 5px;">* O lembrete tocará 10 minutos antes.</small>
+        <div class="input-card">
+            <div class="input-group">
+                <input type="text" id="taskTitle" placeholder="O que vamos fazer?">
+                <div class="row">
+                    <input type="datetime-local" id="taskDate">
+                    <select id="taskCat">
+                        <option value="Pessoal">Geral</option>
+                        <option value="Trabalho">Trabalho</option>
+                        <option value="Urgente">Urgente</option>
+                    </select>
+                </div>
+                <div class="row" style="align-items: center; gap: 20px;">
+                    <label style="font-size: 0.8rem; color: var(--text-dim);">Cor do Card:</label>
+                    <input type="color" id="taskColor" value="#00f2ff" style="width: 50px; padding: 2px; height: 35px;">
+                    <button class="btn-main" onclick="addNote()">Salvar Nota</button>
+                </div>
+            </div>
         </div>
 
-        <div class="agenda-grid" id="agendaGrid"></div>
+        <div class="filters">
+            <div class="filter-chip active">Todas</div>
+            <div class="filter-chip">Hoje</div>
+            <div class="filter-chip">Trabalho</div>
+            <div class="filter-chip">Urgente</div>
+        </div>
+
+        <div class="notes-list" id="notesList">
+            </div>
     </div>
 
-    <audio id="notifSound" preload="auto">
+    <audio id="alertSfx" preload="auto">
         <source src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3" type="audio/mpeg">
     </audio>
 
     <script>
-        let tasks = JSON.parse(localStorage.getItem('agenda_2026_db')) || [];
-        let notified = new Set(); // Evita notificações duplicadas
+        let notes = JSON.parse(localStorage.getItem('eazy_notes_db')) || [];
+        let alertedIds = new Set();
 
-        function addTask() {
+        function addNote() {
             const title = document.getElementById('taskTitle').value;
             const date = document.getElementById('taskDate').value;
+            const cat = document.getElementById('taskCat').value;
             const color = document.getElementById('taskColor').value;
 
-            if (!title || !date) return alert("Preencha título e data!");
+            if (!title || !date) {
+                showNotify("Preencha o título e o horário!");
+                return;
+            }
 
-            const newTask = {
-                id: 'id-' + Date.now(),
+            const newNote = {
+                id: Date.now(),
                 title,
                 date,
+                cat,
                 color,
-                desc: 'Clique aqui para editar a descrição...',
-                locked: false
+                desc: 'Toque para adicionar detalhes...',
+                locked: false,
+                created: Date.now()
             };
 
-            tasks.push(newTask);
+            notes.unshift(newNote); // Adiciona no topo
             saveAndRender();
-            // Limpa campos
             document.getElementById('taskTitle').value = '';
         }
 
         function saveAndRender() {
-            localStorage.setItem('agenda_2026_db', JSON.stringify(tasks));
-            const grid = document.getElementById('agendaGrid');
-            grid.innerHTML = '';
+            localStorage.setItem('eazy_notes_db', JSON.stringify(notes));
+            const list = document.getElementById('notesList');
+            list.innerHTML = '';
 
-            tasks.forEach((t) => {
-                const diffMin = getDiffMinutes(t.date);
-                const isImminent = diffMin > 0 && diffMin <= 10;
+            notes.forEach(n => {
+                const diffMin = getDiff(n.date);
+                const isUrgent = diffMin > 0 && diffMin <= 10;
+                
+                // Cálculo de progresso (baseado em 1 hora antes)
+                let progress = 0;
+                const totalWindow = 60 * 60000; // 1 hora em ms
+                const timeLeft = new Date(n.date) - new Date();
+                if(timeLeft > 0 && timeLeft < totalWindow) {
+                    progress = 100 - (timeLeft / totalWindow * 100);
+                }
 
                 const card = document.createElement('div');
-                card.className = `card-pro ${t.locked ? 'locked' : ''} ${isImminent ? 'imminent' : ''}`;
-                card.style.borderTopColor = t.color;
-                card.id = t.id;
-                card.draggable = !t.locked;
-                card.setAttribute('ondragstart', 'drag(event)');
+                card.className = `note-card ${n.locked ? 'locked' : ''} ${isUrgent ? 'pulse-urgent' : ''}`;
+                card.style.animationDelay = `${0.1}s`;
 
                 card.innerHTML = `
-                    <h3 contenteditable="${!t.locked}" class="editable" onblur="updateTask('${t.id}', 'title', this.innerText)">${t.title}</h3>
-                    <p contenteditable="${!t.locked}" class="editable" onblur="updateTask('${t.id}', 'desc', this.innerText)">${t.desc}</p>
-                    <div class="card-footer">
-                        <div class="time-tag" style="color: ${t.color}">
-                            <i class="fa-regular fa-clock"></i> ${formatTime(t.date)}
-                        </div>
-                        <div class="actions">
-                            <input type="color" value="${t.color}" onchange="updateTask('${t.id}', 'color', this.value)" ${t.locked ? 'disabled' : ''}>
-                            <button class="action-btn ${t.locked ? 'active-lock' : ''}" onclick="toggleLock('${t.id}')">
-                                <i class="fa-solid fa-${t.locked ? 'lock' : 'lock-open'}"></i>
-                            </button>
-                            <button class="action-btn" onclick="deleteTask('${t.id}')">
-                                <i class="fa-solid fa-trash"></i>
-                            </button>
+                    <div class="progress-bar" style="width: ${progress}%; background: ${n.color}"></div>
+                    <div class="note-header">
+                        <span class="note-category" style="background: ${n.color}22; color: ${n.color}">${n.cat}</span>
+                        <input type="color" value="${n.color}" onchange="updateNote(${n.id}, 'color', this.value)" style="width:20px; height:20px; border:none; background:none;">
+                    </div>
+                    <div class="note-content">
+                        <h3 contenteditable="${!n.locked}" onblur="updateNote(${n.id}, 'title', this.innerText)">${n.title}</h3>
+                        <p contenteditable="${!n.locked}" onblur="updateNote(${n.id}, 'desc', this.innerText)">${n.desc}</p>
+                    </div>
+                    <div class="note-footer">
+                        <div class="note-time"><i class="fa-regular fa-clock"></i> ${formatDate(n.date)}</div>
+                        <div class="note-actions">
+                            <i class="fa-solid ${n.locked ? 'fa-lock' : 'fa-lock-open'} action-icon ${n.locked ? 'active' : ''}" onclick="toggleLock(${n.id})"></i>
+                            <i class="fa-solid fa-trash-can action-icon" style="color:#ff336655" onclick="deleteNote(${n.id})"></i>
                         </div>
                     </div>
                 `;
-                grid.appendChild(card);
+                list.appendChild(card);
             });
         }
 
-        // --- Lógica de Lembrete e Tempo ---
-        function getDiffMinutes(targetDate) {
-            const now = new Date();
-            const target = new Date(targetDate);
-            return (target - now) / 60000;
+        function getDiff(d) {
+            return (new Date(d) - new Date()) / 60000;
         }
 
-        function checkReminders() {
-            tasks.forEach(t => {
-                const diff = getDiffMinutes(t.date);
-                // Se faltar entre 0 e 10 minutos e ainda não notificamos hoje
-                if (diff <= 10 && diff > 0 && !notified.has(t.id)) {
-                    showToast(`🚨 LEMBRETE: "${t.title}" começa em breve!`);
-                    document.getElementById('notifSound').play().catch(() => {
-                        console.log("Interação do usuário necessária para som.");
-                    });
-                    notified.add(t.id);
-                    saveAndRender(); // Atualiza para brilhar o card
-                }
-            });
-        }
-
-        // --- Utilitários ---
-        function updateTask(id, field, val) {
-            const index = tasks.findIndex(t => t.id === id);
-            if (index > -1 && !tasks[index].locked) {
-                tasks[index][field] = val;
+        function updateNote(id, field, val) {
+            const n = notes.find(x => x.id === id);
+            if(n && !n.locked) {
+                n[field] = val;
                 if(field === 'color') saveAndRender();
-                else localStorage.setItem('agenda_2026_db', JSON.stringify(tasks));
+                else localStorage.setItem('eazy_notes_db', JSON.stringify(notes));
             }
         }
 
         function toggleLock(id) {
-            const index = tasks.findIndex(t => t.id === id);
-            tasks[index].locked = !tasks[index].locked;
+            const n = notes.find(x => x.id === id);
+            n.locked = !n.locked;
             saveAndRender();
         }
 
-        function deleteTask(id) {
-            const t = tasks.find(x => x.id === id);
-            if(t.locked) return showToast("Desbloqueie para excluir!");
-            tasks = tasks.filter(t => t.id !== id);
+        function deleteNote(id) {
+            const n = notes.find(x => x.id === id);
+            if(n.locked) return showNotify("Nota bloqueada!");
+            notes = notes.filter(x => x.id !== id);
             saveAndRender();
         }
 
-        function formatTime(ds) {
+        function formatDate(ds) {
             const d = new Date(ds);
-            return d.toLocaleDateString('pt-BR', {hour:'2-digit', minute:'2-digit'});
+            return d.toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'});
         }
 
-        function showToast(msg) {
-            const toast = document.getElementById('toast');
+        function showNotify(msg) {
+            const toast = document.getElementById('notification');
             toast.innerText = msg;
             toast.style.display = 'block';
-            setTimeout(() => toast.style.display = 'none', 5000);
+            setTimeout(() => toast.style.display = 'none', 4000);
         }
 
-        // --- Drag and Drop ---
-        function allowDrop(ev) { ev.preventDefault(); }
-        function drag(ev) { ev.dataTransfer.setData("text", ev.target.id); }
-        function drop(ev) {
-            ev.preventDefault();
-            const draggedId = ev.dataTransfer.getData("text");
-            const target = ev.target.closest('.card-pro');
-            if (target && target.id !== draggedId) {
-                const fromIdx = tasks.findIndex(t => t.id === draggedId);
-                const toIdx = tasks.findIndex(t => t.id === target.id);
-                const [moved] = tasks.splice(fromIdx, 1);
-                tasks.splice(toIdx, 0, moved);
-                saveAndRender();
-            }
-        }
-
-        // Loop principal (1 segundo)
+        // Loop de Monitoramento (Relógio e Lembretes)
         setInterval(() => {
             const agora = new Date();
-            document.getElementById('relogio').innerText = agora.toLocaleTimeString('pt-BR');
-            checkReminders();
+            document.getElementById('clock').innerText = agora.toLocaleTimeString('pt-BR');
+            
+            notes.forEach(n => {
+                const diff = getDiff(n.date);
+                // Notificar aos 10 minutos
+                if(diff <= 10 && diff > 0 && !alertedIds.has(n.id)) {
+                    showNotify(`Eazy Notes: "${n.title}" em 10min!`);
+                    document.getElementById('alertSfx').play().catch(()=>{});
+                    alertedIds.add(n.id);
+                    saveAndRender();
+                }
+            });
         }, 1000);
 
         saveAndRender();
