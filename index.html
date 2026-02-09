@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Eazy Notes | OS 2026</title>
+    <title>Eazy Notes | Premium OS</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
@@ -16,6 +16,7 @@
             --text-main: #ffffff;
             --text-dim: #88888e;
             --glass: rgba(255, 255, 255, 0.03);
+            --input-bg: rgba(255, 255, 255, 0.05);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
@@ -24,191 +25,173 @@
             background: var(--bg);
             color: var(--text-main);
             min-height: 100vh;
-            padding-bottom: 100px; /* Espaço para barra mobile */
-            overflow-x: hidden;
+            padding-bottom: 50px;
+            background-image: radial-gradient(circle at 50% -20%, #1a1a2e, #030303);
         }
 
-        /* Ambient Background */
-        .ambient-light {
-            position: fixed;
-            top: -100px;
-            right: -100px;
-            width: 400px;
-            height: 400px;
-            background: var(--secondary);
-            filter: blur(150px);
-            opacity: 0.15;
-            z-index: -1;
-            pointer-events: none;
-        }
+        .container { max-width: 500px; margin: 0 auto; padding: 20px; }
 
-        .container { max-width: 800px; margin: 0 auto; padding: 20px; }
-
-        /* Header */
+        /* Header Refinado */
         header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 30px;
-            padding: 10px 0;
+            margin-bottom: 40px;
+            padding-top: 10px;
         }
 
-        .brand h1 { font-weight: 800; font-size: 1.8rem; letter-spacing: -1px; background: linear-gradient(90deg, #fff, var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        
-        #clock { font-weight: 300; color: var(--primary); font-size: 0.9rem; opacity: 0.8; }
+        .brand h1 { font-weight: 800; font-size: 1.8rem; letter-spacing: -1.5px; background: linear-gradient(90deg, #fff, var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        #clock { font-weight: 400; color: var(--primary); font-size: 0.9rem; letter-spacing: 1px; }
 
-        /* Input Area (Mobile Optimized) */
+        /* Card de Input Pro */
         .input-card {
             background: var(--surface);
             border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 24px;
-            padding: 20px;
+            border-radius: 28px;
+            padding: 24px;
             margin-bottom: 30px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            transition: 0.3s ease;
         }
 
-        .input-group { display: flex; flex-direction: column; gap: 12px; }
+        .input-card:focus-within {
+            border-color: rgba(0, 242, 255, 0.4);
+            box-shadow: 0 0 30px rgba(0, 242, 255, 0.1);
+        }
+
+        .field-wrapper { position: relative; margin-bottom: 15px; }
+        .field-wrapper i { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--text-dim); font-size: 0.9rem; }
 
         input, select {
-            background: rgba(255,255,255,0.05);
+            background: var(--input-bg);
             border: 1px solid rgba(255,255,255,0.1);
-            padding: 14px 18px;
+            padding: 14px 15px 14px 40px;
             border-radius: 16px;
             color: white;
             font-size: 1rem;
             width: 100%;
+            outline: none;
             transition: 0.3s;
         }
 
-        input:focus { border-color: var(--primary); background: rgba(255,255,255,0.08); }
+        input:focus { background: rgba(255,255,255,0.08); border-color: var(--primary); }
 
-        .row { display: flex; gap: 10px; }
+        .row { display: grid; grid-template-columns: 1.2fr 1fr; gap: 12px; }
 
+        /* Botão Salvar Premium */
         .btn-main {
             background: var(--primary);
             color: #000;
             border: none;
             padding: 16px;
-            border-radius: 16px;
-            font-weight: 700;
+            border-radius: 18px;
+            font-weight: 800;
             font-size: 1rem;
             cursor: pointer;
-            transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             width: 100%;
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 10px 20px rgba(0, 242, 255, 0.2);
+            transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        .btn-main:active { transform: scale(0.95); }
+        .btn-main:active { transform: scale(0.96); }
 
-        /* Tabs/Filters */
+        /* Filtros */
         .filters {
             display: flex;
             gap: 10px;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
             overflow-x: auto;
-            padding-bottom: 5px;
+            padding: 5px 0;
+            scrollbar-width: none;
         }
 
         .filter-chip {
             background: var(--glass);
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 0.8rem;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-size: 0.85rem;
             white-space: nowrap;
-            cursor: pointer;
-            border: 1px solid transparent;
+            color: var(--text-dim);
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: 0.3s;
         }
 
-        .filter-chip.active { border-color: var(--primary); color: var(--primary); }
+        .filter-chip.active {
+            background: rgba(0, 242, 255, 0.1);
+            color: var(--primary);
+            border-color: var(--primary);
+        }
 
-        /* Notes Cards */
-        .notes-list { display: flex; flex-direction: column; gap: 16px; }
+        /* Estado Vazio */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-dim);
+            animation: fadeIn 1s ease;
+        }
 
+        .empty-state i { font-size: 3rem; margin-bottom: 15px; opacity: 0.2; }
+
+        /* Cards de Nota */
         .note-card {
             background: var(--surface);
-            border: 1px solid rgba(255,255,255,0.05);
             border-radius: 24px;
             padding: 20px;
-            position: relative;
-            transition: 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-            animation: slideUp 0.5s ease backwards;
+            margin-bottom: 15px;
+            border: 1px solid rgba(255,255,255,0.05);
+            animation: slideUp 0.5s ease;
         }
 
-        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } }
 
-        .note-card.locked { opacity: 0.7; }
-        
-        .progress-bar {
-            position: absolute;
-            top: 0; left: 0;
-            height: 3px;
-            background: var(--primary);
-            width: 0%;
-            transition: width 1s linear;
-            border-radius: 24px 24px 0 0;
-        }
+        /* Cores de Categoria */
+        .cat-tag { font-size: 0.7rem; font-weight: 800; padding: 4px 10px; border-radius: 8px; margin-bottom: 10px; display: inline-block; }
 
-        .note-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
-        .note-category { font-size: 0.65rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; padding: 4px 10px; border-radius: 8px; }
-
-        .note-content h3 { font-size: 1.1rem; margin-bottom: 6px; outline: none; }
-        .note-content p { font-size: 0.9rem; color: var(--text-dim); line-height: 1.4; outline: none; }
-
-        .note-footer {
-            display: flex; justify-content: space-between; align-items: center;
-            margin-top: 15px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.05);
-        }
-
-        .note-time { font-size: 0.75rem; color: var(--primary); font-weight: 600; }
-
-        .note-actions { display: flex; gap: 15px; align-items: center; }
-        .action-icon { color: #555; font-size: 1.1rem; cursor: pointer; transition: 0.2s; }
-        .action-icon:hover { color: #fff; }
-        .action-icon.active { color: var(--primary); }
-
-        /* Notification Toast */
-        #notification {
-            position: fixed;
-            top: 20px; left: 50%; transform: translateX(-50%);
-            background: var(--danger);
-            color: white; padding: 12px 25px; border-radius: 50px;
-            font-size: 0.9rem; font-weight: 700; z-index: 9999;
-            box-shadow: 0 10px 30px rgba(255,51,102,0.3);
-            display: none;
-        }
-
-        /* Imminent Pulse */
-        .pulse-urgent { border-color: var(--danger) !important; box-shadow: 0 0 20px rgba(255,51,102,0.2); }
     </style>
 </head>
 <body>
 
-    <div class="ambient-light"></div>
-    <div id="notification">Lembrete Ativado!</div>
-
     <div class="container">
         <header>
-            <div class="brand">
-                <h1>Eazy Notes</h1>
-            </div>
+            <div class="brand"><h1>Eazy Notes</h1></div>
             <div id="clock">00:00:00</div>
         </header>
 
         <div class="input-card">
-            <div class="input-group">
+            <div class="field-wrapper">
+                <i class="fa-solid fa-pen-nib"></i>
                 <input type="text" id="taskTitle" placeholder="O que vamos fazer?">
-                <div class="row">
+            </div>
+            
+            <div class="row">
+                <div class="field-wrapper">
+                    <i class="fa-solid fa-calendar-day"></i>
                     <input type="datetime-local" id="taskDate">
+                </div>
+                <div class="field-wrapper">
+                    <i class="fa-solid fa-layer-group"></i>
                     <select id="taskCat">
-                        <option value="Pessoal">Geral</option>
+                        <option value="Geral">Geral</option>
                         <option value="Trabalho">Trabalho</option>
                         <option value="Urgente">Urgente</option>
                     </select>
                 </div>
-                <div class="row" style="align-items: center; gap: 20px;">
-                    <label style="font-size: 0.8rem; color: var(--text-dim);">Cor do Card:</label>
-                    <input type="color" id="taskColor" value="#00f2ff" style="width: 50px; padding: 2px; height: 35px;">
-                    <button class="btn-main" onclick="addNote()">Salvar Nota</button>
+            </div>
+
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 10px;">
+                <div style="display:flex; align-items:center; gap:10px;">
+                    <label style="font-size:0.75rem; color:var(--text-dim)">Cor:</label>
+                    <input type="color" id="taskColor" value="#00f2ff" style="width:35px; height:35px; padding:2px; border-radius:50%; border:none;">
                 </div>
+                <button class="btn-main" onclick="addNote()">
+                    Salvar Nota <i class="fa-solid fa-arrow-right"></i>
+                </button>
             </div>
         </div>
 
@@ -219,17 +202,18 @@
             <div class="filter-chip">Urgente</div>
         </div>
 
-        <div class="notes-list" id="notesList">
+        <div id="notesList">
+            <div class="empty-state">
+                <i class="fa-solid fa-wind"></i>
+                <p>Sua mente está limpa.<br>Que tal planejar algo novo?</p>
             </div>
+        </div>
     </div>
 
-    <audio id="alertSfx" preload="auto">
-        <source src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3" type="audio/mpeg">
-    </audio>
+    <audio id="alertSfx" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3"></audio>
 
     <script>
         let notes = JSON.parse(localStorage.getItem('eazy_notes_db')) || [];
-        let alertedIds = new Set();
 
         function addNote() {
             const title = document.getElementById('taskTitle').value;
@@ -237,126 +221,48 @@
             const cat = document.getElementById('taskCat').value;
             const color = document.getElementById('taskColor').value;
 
-            if (!title || !date) {
-                showNotify("Preencha o título e o horário!");
-                return;
-            }
+            if (!title || !date) return alert("Preencha os campos!");
 
-            const newNote = {
-                id: Date.now(),
-                title,
-                date,
-                cat,
-                color,
-                desc: 'Toque para adicionar detalhes...',
-                locked: false,
-                created: Date.now()
-            };
-
-            notes.unshift(newNote); // Adiciona no topo
-            saveAndRender();
+            const newNote = { id: Date.now(), title, date, cat, color, locked: false };
+            notes.unshift(newNote);
+            save();
             document.getElementById('taskTitle').value = '';
         }
 
-        function saveAndRender() {
+        function save() {
             localStorage.setItem('eazy_notes_db', JSON.stringify(notes));
+            render();
+        }
+
+        function render() {
             const list = document.getElementById('notesList');
-            list.innerHTML = '';
-
-            notes.forEach(n => {
-                const diffMin = getDiff(n.date);
-                const isUrgent = diffMin > 0 && diffMin <= 10;
-                
-                // Cálculo de progresso (baseado em 1 hora antes)
-                let progress = 0;
-                const totalWindow = 60 * 60000; // 1 hora em ms
-                const timeLeft = new Date(n.date) - new Date();
-                if(timeLeft > 0 && timeLeft < totalWindow) {
-                    progress = 100 - (timeLeft / totalWindow * 100);
-                }
-
-                const card = document.createElement('div');
-                card.className = `note-card ${n.locked ? 'locked' : ''} ${isUrgent ? 'pulse-urgent' : ''}`;
-                card.style.animationDelay = `${0.1}s`;
-
-                card.innerHTML = `
-                    <div class="progress-bar" style="width: ${progress}%; background: ${n.color}"></div>
-                    <div class="note-header">
-                        <span class="note-category" style="background: ${n.color}22; color: ${n.color}">${n.cat}</span>
-                        <input type="color" value="${n.color}" onchange="updateNote(${n.id}, 'color', this.value)" style="width:20px; height:20px; border:none; background:none;">
-                    </div>
-                    <div class="note-content">
-                        <h3 contenteditable="${!n.locked}" onblur="updateNote(${n.id}, 'title', this.innerText)">${n.title}</h3>
-                        <p contenteditable="${!n.locked}" onblur="updateNote(${n.id}, 'desc', this.innerText)">${n.desc}</p>
-                    </div>
-                    <div class="note-footer">
-                        <div class="note-time"><i class="fa-regular fa-clock"></i> ${formatDate(n.date)}</div>
-                        <div class="note-actions">
-                            <i class="fa-solid ${n.locked ? 'fa-lock' : 'fa-lock-open'} action-icon ${n.locked ? 'active' : ''}" onclick="toggleLock(${n.id})"></i>
-                            <i class="fa-solid fa-trash-can action-icon" style="color:#ff336655" onclick="deleteNote(${n.id})"></i>
-                        </div>
-                    </div>
-                `;
-                list.appendChild(card);
-            });
-        }
-
-        function getDiff(d) {
-            return (new Date(d) - new Date()) / 60000;
-        }
-
-        function updateNote(id, field, val) {
-            const n = notes.find(x => x.id === id);
-            if(n && !n.locked) {
-                n[field] = val;
-                if(field === 'color') saveAndRender();
-                else localStorage.setItem('eazy_notes_db', JSON.stringify(notes));
+            if (notes.length === 0) {
+                list.innerHTML = `<div class="empty-state"><i class="fa-solid fa-wind"></i><p>Sua mente está limpa.</p></div>`;
+                return;
             }
-        }
 
-        function toggleLock(id) {
-            const n = notes.find(x => x.id === id);
-            n.locked = !n.locked;
-            saveAndRender();
+            list.innerHTML = notes.map(n => `
+                <div class="note-card" style="border-left: 4px solid ${n.color}">
+                    <span class="cat-tag" style="background:${n.color}22; color:${n.color}">${n.cat}</span>
+                    <h3>${n.title}</h3>
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-top:15px; font-size:0.8rem; color:var(--text-dim)">
+                        <span><i class="fa-regular fa-clock"></i> ${new Date(n.date).toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'})}</span>
+                        <i class="fa-solid fa-trash-can" onclick="deleteNote(${n.id})" style="cursor:pointer"></i>
+                    </div>
+                </div>
+            `).join('');
         }
 
         function deleteNote(id) {
-            const n = notes.find(x => x.id === id);
-            if(n.locked) return showNotify("Nota bloqueada!");
-            notes = notes.filter(x => x.id !== id);
-            saveAndRender();
+            notes = notes.filter(n => n.id !== id);
+            save();
         }
 
-        function formatDate(ds) {
-            const d = new Date(ds);
-            return d.toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'});
-        }
-
-        function showNotify(msg) {
-            const toast = document.getElementById('notification');
-            toast.innerText = msg;
-            toast.style.display = 'block';
-            setTimeout(() => toast.style.display = 'none', 4000);
-        }
-
-        // Loop de Monitoramento (Relógio e Lembretes)
         setInterval(() => {
-            const agora = new Date();
-            document.getElementById('clock').innerText = agora.toLocaleTimeString('pt-BR');
-            
-            notes.forEach(n => {
-                const diff = getDiff(n.date);
-                // Notificar aos 10 minutos
-                if(diff <= 10 && diff > 0 && !alertedIds.has(n.id)) {
-                    showNotify(`Eazy Notes: "${n.title}" em 10min!`);
-                    document.getElementById('alertSfx').play().catch(()=>{});
-                    alertedIds.add(n.id);
-                    saveAndRender();
-                }
-            });
+            document.getElementById('clock').innerText = new Date().toLocaleTimeString('pt-BR');
         }, 1000);
 
-        saveAndRender();
+        render();
     </script>
 </body>
 </html>
